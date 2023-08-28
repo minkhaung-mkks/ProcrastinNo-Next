@@ -11,30 +11,16 @@ export default function Home() {
   const [database, setDatabase] = useState()
   const [input, setInput] = useState('')
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('https://procrastino.netlify.app/URL');
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const data = await response.text();
-      console.log(data)
-      return data; // This will contain the response from the edge function
-    } catch (error) {
-      console.error('Fetch error:', error);
-    }
-  };
-  let userAgenda;
-
   const startApp = async () => {
+    const response = await fetch('/api/firebase')
+    const data = await response.json()
     const firebaseConfig = {
-      databaseURL: 'https://to-do-b8cb3-default-rtdb.asia-southeast1.firebasedatabase.app/'
+      databaseURL: data
     }
-    // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const ref_database = getDatabase(app)
     setDatabase(ref_database)
-    userAgenda = ref(ref_database, "To-Dos")
+    let userAgenda = ref(ref_database, "To-Dos")
     onValue(userAgenda, (snapshot) => {
       // reset()
       const data = Object.entries(snapshot.val());
@@ -62,7 +48,7 @@ export default function Home() {
   return (
     <main id="web_page">
       <div className="title_box">
-        <label className="title_txt" for="Add to agenda">
+        <label className="title_txt" htmlFor="Add to agenda">
           Add to list</label>
         <img src="./assets/img/main.png" className="capoo_img" alt="capoo writing something" />
         <div className="input_box">
