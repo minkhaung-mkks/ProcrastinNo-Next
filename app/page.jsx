@@ -35,6 +35,7 @@ export default function Home() {
   const AddNewToDo = () => {
     let itemLocationInDb = ref(database, `To-Dos`)
     push(itemLocationInDb, input)
+    setInput('')
   }
   const enterKey = (e) => {
     if (e.key === 'Enter') {
