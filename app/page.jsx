@@ -16,6 +16,34 @@ export default function Home() {
   const { app: firebaseApp, isAppInitialized } = useFirebase()
   const { database: firebaseDatabase, isDatabaseInitialized } = useDatabase(firebaseApp, appIntialized);
 
+<<<<<<< HEAD
+=======
+  const startApp = async () => {
+    const response = await fetch('/api/firebase')
+    const data = await response.json()
+    const firebaseConfig = {
+      databaseURL: data
+    }
+    const app = initializeApp(firebaseConfig);
+    const ref_database = getDatabase(app)
+    setDatabase(ref_database)
+    let userAgenda = ref(ref_database, "To-Dos")
+    onValue(userAgenda, (snapshot) => {
+      // reset()
+      const data = Object.entries(snapshot.val());
+      setAgenda(data)
+    })
+  }
+  const removeFromDb = (id) => {
+    console.log(id)
+    let itemLocationInDb = ref(database, `To-Dos/${id}`)
+    remove(itemLocationInDb)
+  }
+  const AddNewToDo = () => {
+    let itemLocationInDb = ref(database, `To-Dos`)
+    push(itemLocationInDb, input)
+  }
+>>>>>>> parent of 0c96e01... Fix a few bugs
   const enterKey = (e) => {
     if (e.key === 'Enter') {
       addNewToDo(firebaseDatabase, input)
