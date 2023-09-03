@@ -1,5 +1,3 @@
-// useAuth.js
-
 import { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, signInAnonymously } from 'firebase/auth';
 
