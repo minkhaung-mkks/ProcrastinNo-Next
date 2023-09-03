@@ -6,6 +6,7 @@ import useFirebase from '@/utlis/firebaseApp.jsx'
 import useDatabase from '@/utlis/useDatabase.js'
 import { removeFromDb, addNewToDo, stopListening, listenForValueChange } from '@/utlis/DatabaseFunctions'
 import InputBox from '@/components/InputBox'
+import Card from '@/components/Card'
 
 export default function Home() {
 
@@ -19,17 +20,17 @@ export default function Home() {
 
   const enterKey = (e) => {
     if (e.key === 'Enter') {
-      addNewToDo(firebaseDatabase, input)
+      addItem()
     }
   }
-
+  const addItem = () => {
+    addNewToDo(firebaseDatabase, input)
+    setInput('')
+  }
   useEffect(() => {
-    console.log(firebaseApp)
     setAppIntialized(isAppInitialized)
   }, [isAppInitialized])
   useEffect(() => {
-    console.log(firebaseDatabase)
-
     setDatabaseIntialized(isDatabaseInitialized)
   }, [isDatabaseInitialized])
   useEffect(() => {
@@ -51,7 +52,7 @@ export default function Home() {
           placeholder={'Add a new item'}
           buttonText={'Add to list'}
           symbol={'+'}
-          handleClick={() => addNewToDo(firebaseDatabase, input)}
+          handleClick={addItem}
           handleKeydown={(e) => enterKey(e)}
         />
       </div>
@@ -61,9 +62,11 @@ export default function Home() {
       </div>
       <div className="agenda_box">
         {agenda.map((data, index) => (
-          <div key={index} className="agenda_card" onClick={() => removeFromDb(firebaseDatabase, data[0])}>
-            <h4 className="agenda_txt">{data[1]}</h4>
-          </div>
+          <Card
+            index={index}
+            handleClick={() => removeFromDb(firebaseDatabase, data[0])}
+            text={data[1]}
+          />
         ))}
       </div>
     </main>
