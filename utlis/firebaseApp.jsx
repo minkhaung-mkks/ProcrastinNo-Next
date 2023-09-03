@@ -11,7 +11,14 @@ function useFirebase() {
                 const response = await fetch('/api/firebase');
                 const data = await response.json();
                 const firebaseConfig = {
-                    databaseURL: data
+                    apiKey: "AIzaSyDNr3yZEDDIE4zcAUqs-Fn9IXeomDAZyis",
+                    authDomain: "to-do-b8cb3.firebaseapp.com",
+                    databaseURL: "https://to-do-b8cb3-default-rtdb.asia-southeast1.firebasedatabase.app",
+                    projectId: "to-do-b8cb3",
+                    storageBucket: "to-do-b8cb3.appspot.com",
+                    messagingSenderId: "782208814642",
+                    appId: "1:782208814642:web:e6b4eeca4af2394b23362b",
+                    measurementId: "G-466ES3W084"
                 };
                 const appInstance = initializeApp(firebaseConfig);
                 setApp(appInstance);
