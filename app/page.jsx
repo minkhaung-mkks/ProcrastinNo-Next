@@ -30,8 +30,11 @@ export default function Home() {
     setInput('')
   }
   useEffect(() => {
-    console.log(user.uid)
-  }, [loggedIn])
+    console.log(user)
+    if (loggedIn) {
+      console.log(user.uid)
+    }
+  }, [user])
   useEffect(() => {
     setAppIntialized(isAppInitialized)
   }, [isAppInitialized])
