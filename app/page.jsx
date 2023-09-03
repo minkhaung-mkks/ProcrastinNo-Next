@@ -5,6 +5,7 @@ import styles from './page.module.css'
 import useFirebase from '@/utlis/firebaseApp.jsx'
 import useDatabase from '@/utlis/useDatabase.js'
 import { removeFromDb, addNewToDo, stopListening, listenForValueChange } from '@/utlis/DatabaseFunctions'
+import InputBox from '@/components/InputBox'
 
 export default function Home() {
 
@@ -44,12 +45,15 @@ export default function Home() {
         <label className="title_txt" htmlFor="Add to agenda">
           Add to list</label>
         <img src="./assets/img/main.png" className="capoo_img" alt="capoo writing something" />
-        <div className="input_box">
-          <input id="new_item_input" name="Add to agenda" type="text" className="input_field"
-            placeholder="Add a new item" value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => enterKey(e)} />
-          <input onClick={() => addNewToDo(firebaseDatabase, input)} className="add_btn" type="button" value="Add to list" />
-          <span onClick={() => addNewToDo(firebaseDatabase, input)} className="add_symbol">+</span>
-        </div>
+        <InputBox
+          input={input}
+          setInput={setInput}
+          placeholder={'Add a new item'}
+          buttonText={'Add to list'}
+          symbol={'+'}
+          handleClick={() => addNewToDo(firebaseDatabase, input)}
+          handleKeydown={(e) => enterKey(e)}
+        />
       </div>
       <div className="sub_title_box">
         <h2 className="sub_title">Your current Agenda <img className="small_logo"
