@@ -1,11 +1,11 @@
 import { ref, push, set, onValue, remove, off } from 'firebase/database'
 
-export const removeFromDb = (database, id) => {
-    let itemLocationInDb = ref(database, `To-Dos/${id}`)
+export const removeFromDb = (database, uid, id) => {
+    let itemLocationInDb = ref(database, `To-Dos/${uid}/${id}`)
     remove(itemLocationInDb)
 }
-export const addNewToDo = (database, input) => {
-    let itemLocationInDb = ref(database, `To-Dos`)
+export const addNewToDo = (database, uid, input) => {
+    let itemLocationInDb = ref(database, `To-Dos/${uid}`)
     push(itemLocationInDb, input)
 }
 
