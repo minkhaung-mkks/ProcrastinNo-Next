@@ -18,7 +18,7 @@ export default function Home() {
   const [input, setInput] = useState('')
   const { app: firebaseApp, isAppInitialized } = useFirebase()
   const { database: firebaseDatabase, isDatabaseInitialized } = useDatabase(firebaseApp, appIntialized);
-  const { user: user, loggedIn: loggedIn } = useAuth(appIntialized);
+  const { user: user, loggedIn: userLoggedIn } = useAuth(appIntialized);
 
   const enterKey = (e) => {
     if (e.key === 'Enter') {
@@ -26,12 +26,13 @@ export default function Home() {
     }
   }
   const addItem = () => {
-    addNewToDo(firebaseDatabase, input)
+    console.log(user.uid)
+    addNewToDo(firebaseDatabase, user.uid, input)
     setInput('')
   }
   useEffect(() => {
     console.log(user)
-    if (loggedIn) {
+    if (userLoggedIn) {
       console.log(user.uid)
     }
   }, [user])
@@ -42,42 +43,55 @@ export default function Home() {
     setDatabaseIntialized(isDatabaseInitialized)
   }, [isDatabaseInitialized])
   useEffect(() => {
-    const onDataChange = (updatedData) => {
-      setAgenda(updatedData)
+    if (databaseIntialized && userLoggedIn) {
+      const onDataChange = (updatedData) => {
+        setAgenda(updatedData)
+      }
+      const listener = listenForValueChange(firebaseDatabase, `To-Dos/${user.uid}`, onDataChange, databaseIntialized)
     }
-    console.log(firebaseDatabase)
-    const listener = listenForValueChange(firebaseDatabase, `To-Dos`, onDataChange, databaseIntialized)
-  }, [databaseIntialized])
+  }, [databaseIntialized, user, userLoggedIn])
   return (
     <main id="web_page">
-      <div className="title_box">
-        <label className="title_txt" htmlFor="Add to agenda">
-          Add to list</label>
-        <img src="./assets/img/main.png" className="capoo_img" alt="capoo writing something" />
-        <InputBox
-          input={input}
-          setInput={setInput}
-          placeholder={'Add a new item'}
-          buttonText={'Add to list'}
-          symbol={'+'}
-          handleClick={addItem}
-          handleKeydown={(e) => enterKey(e)}
-        />
-      </div>
-      <div className="sub_title_box">
-        <h2 className="sub_title">Your current Agenda <img className="small_logo"
-          src="./assets/favicons/android-chrome-512x512.png" alt="To do list icon" /></h2>
-      </div>
-      <div className="agenda_box">
-        {agenda.map((data, index) => (
-          <Card
-            key={index}
-            index={index}
-            handleClick={() => removeFromDb(firebaseDatabase, data[0])}
-            text={data[1]}
-          />
-        ))}
-      </div>
+      {user && userLoggedIn ? (
+        <>
+          <div className="title_box">
+            <h1 className='title_txt'>Procrasti-No</h1>
+            <label className="title_txt" htmlFor="Add to agenda">
+              Add to list</label>
+            <img src="./assets/img/main.png" className="capoo_img" alt="capoo writing something" />
+            <InputBox
+              input={input}
+              setInput={setInput}
+              placeholder={'Add a new item'}
+              buttonText={'Add to list'}
+              symbol={'+'}
+              handleClick={addItem}
+              handleKeydown={(e) => enterKey(e)}
+            />
+          </div>
+          <div className="sub_title_box">
+            <h2 className="sub_title">Your current Agenda <img className="small_logo"
+              src="./assets/favicons/android-chrome-512x512.png" alt="To do list icon" /></h2>
+          </div>
+          <div className="agenda_box">
+            {agenda.length > 0 && agenda.map((data, index) => (
+              <Card
+                key={index}
+                index={index}
+                handleClick={() => removeFromDb(firebaseDatabase, user.uid, data[0])}
+                text={data[1]}
+              />
+            ))}
+          </div>
+        </>
+      ) : (
+        <div className="title_box">
+          <label className="title_txt" htmlFor="Add to agenda">
+            Procrasti-No</label>
+          <img src="./assets/img/main.png" className="capoo_img" alt="capoo writing something" />
+          <h5>Loading....</h5>
+        </div>
+      )}
     </main>
   )
 }
