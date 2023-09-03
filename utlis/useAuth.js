@@ -14,6 +14,7 @@ const useAuth = (appIntialized) => {
                 if (authUser) {
                     // User is signed in.
                     setUser(authUser);
+                    setLoggedIn(true)
                 } else {
                     // User is not signed in.
                     // Sign in anonymously.
@@ -21,8 +22,8 @@ const useAuth = (appIntialized) => {
                         signInAnonymously(auth).then((userCredential) => {
                             const user = userCredential.user
                             console.log(user)
-                            setUser(user);
                             setLoggedIn(true)
+                            setUser(user);
                         })
                             .catch((error) => {
                                 const errorCode = error.code;
