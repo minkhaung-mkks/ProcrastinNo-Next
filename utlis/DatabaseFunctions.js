@@ -19,6 +19,9 @@ export const listenForValueChange = (database, location = 'To-Dos', onDataChange
                 const data = Object.entries(snapshot.val());
                 onDataChanged(data); // Call the provided callback with the updated data
             }
+            else {
+                onDataChanged(null)
+            }
         };
 
         onValue(userAgenda, callback);
