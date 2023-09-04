@@ -11,6 +11,7 @@ const useAuth = (appIntialized) => {
             console.log(appIntialized)
             const auth = getAuth()
             onAuthStateChanged(auth, (authUser) => {
+                alert(`${auth.currentUser?.uid} current user`)
                 if (authUser) {
                     // User is signed in.
                     setUser(authUser);
@@ -19,9 +20,10 @@ const useAuth = (appIntialized) => {
                     // User is not signed in.
                     // Sign in anonymously.
                     try {
-                        signInAnonymously(auth).then((userCredential) => {
-                            const user = userCredential.user
+                        signInAnonymously(auth).then(async (userCredential) => {
+                            const user = await userCredential.user
                             console.log(user)
+                            alert(user.uid)
                             setLoggedIn(true)
                             setUser(user);
                         })
