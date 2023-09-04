@@ -8,6 +8,7 @@ import { removeFromDb, addNewToDo, stopListening, listenForValueChange } from '@
 import InputBox from '@/components/InputBox'
 import Card from '@/components/Card'
 import useAuth from '@/utlis/useAuth.js'
+import { handleSignInWithGoogle, upgradeAnonymousToGoogleUser, handleSignOut } from '@/utlis/Auth'
 
 export default function Home() {
 
@@ -27,15 +28,14 @@ export default function Home() {
   }
   const addItem = () => {
     console.log(user.uid)
-    addNewToDo(firebaseDatabase, user.uid, input)
-    setInput('')
-  }
-  useEffect(() => {
-    console.log(user)
-    if (userLoggedIn) {
-      console.log(user.uid)
+    if (input.length > 0) {
+      addNewToDo(firebaseDatabase, user.uid, input)
+      setInput('')
     }
-  }, [user])
+    else {
+      alert('Item cannot be empty')
+    }
+  }
   useEffect(() => {
     setAppIntialized(isAppInitialized)
   }, [isAppInitialized])
@@ -58,6 +58,17 @@ export default function Home() {
             <h1 className='title_txt'>Procrasti-No</h1>
             <label className="title_txt" htmlFor="Add to agenda">
               Add to list</label>
+
+            {user.isAnonymous ? (
+              <button onClick={upgradeAnonymousToGoogleUser}>
+                Sign In With Google
+              </button>
+            ) : (
+              <button onClick={handleSignOut}>
+                Sign Out
+              </button>)
+            }
+
             <img src="./assets/img/main.png" className="capoo_img" alt="capoo writing something" />
             <InputBox
               input={input}
