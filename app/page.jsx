@@ -85,14 +85,16 @@ export default function Home() {
               src="./assets/favicons/android-chrome-512x512.png" alt="To do list icon" /></h2>
           </div>
           <div className="agenda_box">
-            {agenda.length > 0 && agenda.map((data, index) => (
+            {agenda && agenda.length > 0 ? agenda.map((data, index) => (
               <Card
                 key={index}
                 index={index}
                 handleClick={() => removeFromDb(firebaseDatabase, user.uid, data[0])}
                 text={data[1]}
               />
-            ))}
+            )) : (
+              <h2>No Items in list</h2>
+            )}
           </div>
         </>
       ) : (
