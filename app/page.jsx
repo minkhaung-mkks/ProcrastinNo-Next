@@ -8,11 +8,13 @@ import { removeFromDb, addNewToDo, stopListening, listenForValueChange } from '@
 import InputBox from '@/components/InputBox'
 import Card from '@/components/Card'
 import useAuth from '@/utlis/useAuth.js'
-import { handleSignInWithGoogle, upgradeAnonymousToGoogleUser, handleSignOut } from '@/utlis/Auth'
+import { handleSignInWithGoogle, upgradeAnonymousToGoogleUser, handleSignOut, upgradeToEmailAndPassAccount } from '@/utlis/Auth'
 
 export default function Home() {
 
   const [agenda, setAgenda] = useState([])
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
   const [database, setDatabase] = useState()
   const [appIntialized, setAppIntialized] = useState(false)
   const [databaseIntialized, setDatabaseIntialized] = useState(false)
@@ -60,9 +62,18 @@ export default function Home() {
               Add to list</label>
 
             {user.isAnonymous ? (
-              <button onClick={upgradeAnonymousToGoogleUser}>
-                Sign In With Google
-              </button>
+              <>
+                <button className='sign_in_btns' onClick={upgradeAnonymousToGoogleUser}>
+                  Sign In With Google
+                </button>
+                <div className="email_login_box">
+                  <input value={email} onChange={(e) => setEmail(e.target.value)} type="text" className="login_fields" />
+                  <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" name="" id="" className='login_fields' />
+                  <button className='sign_in_btns' onClick={() => upgradeToEmailAndPassAccount(email, password)}>
+                    Log in
+                  </button>
+                </div>
+              </>
             ) : (
               <button onClick={handleSignOut}>
                 Sign Out
