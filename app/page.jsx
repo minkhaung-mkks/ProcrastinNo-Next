@@ -75,9 +75,10 @@ export default function Home() {
                 </div>
               </>
             ) : (
-              <button onClick={handleSignOut}>
+              <button className='sign_in_btns' onClick={handleSignOut}>
                 Sign Out
-              </button>)
+              </button>
+            )
             }
 
             <img src="./assets/img/main.png" className="capoo_img" alt="capoo writing something" />
