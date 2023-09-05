@@ -1,4 +1,4 @@
-import { getAuth, linkWithPopup, GoogleAuthProvider, signInWithPopup, signOut, signInWithCredential } from 'firebase/auth';
+import { getAuth, linkWithPopup, GoogleAuthProvider, signInWithPopup, signOut, signInWithCredential, EmailAuthProvider, linkWithCredential } from 'firebase/auth';
 
 export const handleSignInWithGoogle = async () => {
     const auth = getAuth();
@@ -50,7 +50,17 @@ export const upgradeAnonymousToGoogleUser = async () => {
         }
     }
 };
-
+export const upgradeToEmailAndPassAccount = (email, password) => {
+    const credential = EmailAuthProvider.credential(email, password)
+    const auth = getAuth();
+    linkWithCredential(auth.currentUser, credential)
+        .then((usercred) => {
+            const user = usercred.user;
+            console.log("Account linking success", user);
+        }).catch((error) => {
+            console.log("Account linking error", error);
+        });
+}
 export const handleSignOut = async () => {
     const auth = getAuth();
 
