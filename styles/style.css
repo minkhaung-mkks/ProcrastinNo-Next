@@ -208,6 +208,29 @@ body {
 }
 
 
+.email_login_box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.sign_in_btns {
+    background-color: var(--background);
+    border: 0px solid var(--text);
+    width: 200px;
+    height: 30px;
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    cursor: pointer;
+}
+
+.sign_in_btns:hover {
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
+}
 
 /* Extra small devices (phones, 600px and down) */
 @media only screen and (max-width: 768px) {
@@ -292,4 +315,5 @@ body {
         font-weight: 400;
         font-size: 1rem;
     }
+
 }
